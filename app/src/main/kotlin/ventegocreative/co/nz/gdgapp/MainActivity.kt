@@ -8,17 +8,14 @@ import butterknife.BindView
 import butterknife.ButterKnife
 
 import ventegocreative.co.nz.gdgapp.adapters.AnimalListAdapter
-import ventegocreative.co.nz.gdgapp.model.api.PetfinderRequest
+
+import org.jetbrains.anko.*
+import ventegocreative.co.nz.gdgapp.commands.PetFindCommand
 
 class MainActivity : AppCompatActivity() {
 
     @BindView(R.id.animal_list)
     lateinit var animalList: RecyclerView
-
-    private val animalItems = listOf(
-        "Molly - 12 yrs - Persian",
-        "Max - 7 yrs - German Shepherd",
-        "Tantala - 2 months - Chicken")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +24,13 @@ class MainActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         animalList.layoutManager = LinearLayoutManager(this)
-        animalList.adapter = AnimalListAdapter(animalItems)
 
-        var result = PetfinderRequest("90210", "cat", this).send()
+        doAsync() {
+            val result = PetFindCommand("90210","cat").execute()
+            uiThread {
+                animalList.adapter = AnimalListAdapter(result)
+            }
+        }
 
     }
 }
