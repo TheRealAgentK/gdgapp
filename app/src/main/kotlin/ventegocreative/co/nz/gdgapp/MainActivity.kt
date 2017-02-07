@@ -8,6 +8,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 
 import ventegocreative.co.nz.gdgapp.adapters.AnimalListAdapter
+import ventegocreative.co.nz.gdgapp.model.api.PetfinderRequest
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         animalList.layoutManager = LinearLayoutManager(this)
         animalList.adapter = AnimalListAdapter(animalItems)
+
+        var result = PetfinderRequest("90210", "cat", this).send()
 
     }
 }
