@@ -11,6 +11,7 @@ import ventegocreative.co.nz.gdgapp.adapters.AnimalListAdapter
 
 import org.jetbrains.anko.*
 import ventegocreative.co.nz.gdgapp.commands.PetFindCommand
+import ventegocreative.co.nz.gdgapp.model.domain.Pet
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +29,14 @@ class MainActivity : AppCompatActivity() {
         doAsync() {
             val result = PetFindCommand("90210","cat").execute()
             uiThread {
-                animalList.adapter = AnimalListAdapter(result)
+                animalList.adapter = AnimalListAdapter(result,
+                    object: AnimalListAdapter.ItemClickListener{
+                        override fun invoke(pet: Pet) {
+                            toast(pet.name)
+                        }
+                    }
+                )
+
             }
         }
 
