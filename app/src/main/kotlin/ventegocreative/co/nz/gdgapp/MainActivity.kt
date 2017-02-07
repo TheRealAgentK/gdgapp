@@ -10,6 +10,7 @@ import butterknife.ButterKnife
 import ventegocreative.co.nz.gdgapp.adapters.AnimalListAdapter
 
 import org.jetbrains.anko.*
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 import ventegocreative.co.nz.gdgapp.commands.PetFindCommand
 import ventegocreative.co.nz.gdgapp.model.domain.Pet
 
@@ -20,11 +21,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        frameLayout {
+            recyclerView {
+                id = R.id.animal_list
+                layoutManager = LinearLayoutManager(ctx)
+            }
+        }
 
         ButterKnife.bind(this)
-
-        animalList.layoutManager = LinearLayoutManager(this)
 
         doAsync(exceptionHandler = { throwable : Throwable -> throwable.printStackTrace() }) {
             val result = PetFindCommand("90210","cat").execute()
